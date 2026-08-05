@@ -1,0 +1,321 @@
+
+/* .App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+} */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.navbar {
+  background: white;
+  height: 60px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.LinkProfile{
+  font-size: 1.5rem;
+  color: #3D2C8D;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.dropdown-image {
+  cursor: pointer;
+  height: 50px;
+}
+
+.dropdown-menu {
+  position: absolute;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-menu a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-menu a:hover {
+  border-radius: 10px;
+  background-color: #f1f1f1;
+  text-shadow: #282c34;
+  font-weight: bold;
+  color: #705fbe;
+}
+
+.container {
+  width: 100%;
+  height: 100vh;
+  background-color: #D9D9D9;
+}
+
+
+.card-container {
+  display: flex;
+  justify-content: center;
+  gap: 200px;
+  margin-bottom: 30px;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.card img {
+  height: 200px;
+  /* width: 300px; */
+  border-radius: 15px;
+  transition: border 0.3s ease, filter 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  border: 3px solid transparent;
+}
+
+.card:hover img {
+  filter: brightness(90%);
+  border-color: #A29BFE;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+}
+
+.card h3 {
+  font-size: 1rem;
+  font-weight: bold;
+  margin-top: 10px;
+  transition: color 0.3s ease, font-size 0.3s ease, text-shadow 0.3s ease;
+}
+
+.card:hover h3 {
+  color: #3D2C8D;
+  cursor: pointer;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f4f4f9;
+}
+@font-face{
+  font-family: myfont;
+  src: url(../src/font/OtomanopeeOne-Regular.ttf)
+}
+.container-auth {
+  display: flex;
+  /* width: 80%; */
+  max-width: 1000px;
+  border: 0.5px solid #080808;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: #fff;
+}
+
+.features-section-auth {
+  flex: 1;
+  /* background-image: url('leaf.jpg');  */
+  /* background-image: url('page.jpg');  */
+  background-image: url('../src/assets/im.jpg'); 
+  background-size: cover;
+  padding: 20px;
+  color: #333;
+}
+
+.form-section-heading-auth{
+  color: #FFFFFF;
+  background-color: #4a4a8a;
+  padding: 10px;
+  border-radius: 20px;
+  font-size: 24px;
+  margin-bottom: 20px;
+  font-family: myfont;
+  font-size: 36px;
+  font-weight: 1200;
+  text-align: center;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+
+}
+
+.features-section-auth ul {
+  list-style-type: none;
+  padding: 0;
+  
+}
+
+.features-section-auth li {
+  font-size: 18px;
+  margin-bottom: 10px;
+  font-family: myfont;
+  font-weight: 400;
+  line-height: 40px;
+  letter-spacing: -0.23000000417232513px;
+  text-align: center;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+  width: 471px;
+  height: 116px;
+  top: -332px;
+  left: 1571px;
+  gap: 0px;
+  opacity: 0px;
+  font-size: 30px;
+
+
+}
+
+.form-section-auth {
+  /* flex: 2; */
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-items: center;
+  align-items: center;
+  background: #D4D0CA
+
+}
+.features-section-auth h2 {
+  font-size: 32px;
+  color: #4a4a8a;
+  margin-bottom: 20px;
+  font-weight: 750;
+  font-family: myfont;
+  padding: 5px;
+  /* background-color:  #AA89DF72; */
+  width: 400px;
+  text-align: center;
+height: 55px;
+/* border-radius: 20px; */
+opacity: 0px;
+}
+
+.form-toggle-auth {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.form-toggle-auth button {
+  background-color: #f4f4f9;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  color: #4a4a8a;
+  border-radius: 8px;
+}
+
+.form-toggle-auth .active {
+  background-color: #4a4a8a;
+  color: #fff;
+}
+
+.form-auth {
+  width: 100%;
+  max-width: 300px;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-auth h3 {
+  font-size: 20px;
+  color: #4a4a8a;
+}
+
+.form-auth p {
+  color: #2b2a2a;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+.form-auth input {
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  width: 267.06px;
+height: 35.92px;
+top: 301.25px;
+left: 884.47px;
+gap: 0px;
+border-radius: 10px ;
+opacity: 0px;
+
+}
+
+.form-auth button {
+  background-color: #4a4a8a;
+  color: white;
+  border: none;
+  padding: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.form-auth button:hover {
+  background-color: #3b3b7a;
+}
+
+input, textarea {
+  background-color: #bcb3b3;
+}
+
+
+
+
+@media screen and (max-width: 768px) {
+  .container-auth {
+    flex-direction: column; /* Stacks elements vertically on smaller screens */
+    padding: 15px; /* Reduce padding for smaller screens */
+  }
+}
+
+/* For very small screens, you may want to adjust padding or spacing even further */
+@media screen and (max-width: 480px) {
+  .container-auth {
+    padding: 10px; /* Smaller padding on very small screens */
+  }
+}
