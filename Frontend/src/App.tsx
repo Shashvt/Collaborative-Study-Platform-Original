@@ -28,9 +28,11 @@ import PYQSelectStream from "./pages/pyqSelectStream";
 import PYQSelectYear from "./pages/pyqSelectYear";
 import PYQSelectSubject from "./pages/pyqSelectSubject";
 import PYQList from "./pages/AvailiablePYQ";
+import SavedResources from "./pages/SavedResources";
 
 import ProtectedRoute from "./components/protectedRoute";
 import { AuthContextProvider } from "./context/Auth-Context";
+import { SavedResourcesProvider } from "./context/SavedResources-Context";
 import PublicRoute from "./components/publicRoute";
 import { ToastContainer } from "react-toastify";
 
@@ -40,6 +42,7 @@ function App() {
        <ToastContainer
       />
       <AuthContextProvider>
+        <SavedResourcesProvider>
      
         <div className="App">
           <header className="App-header">
@@ -60,6 +63,14 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <HomeScreen />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/saved"
+                element={
+                  <ProtectedRoute>
+                    <SavedResources />
                   </ProtectedRoute>
                 }
               />
@@ -242,6 +253,7 @@ function App() {
             </Routes>
           </header>
         </div>
+        </SavedResourcesProvider>
       </AuthContextProvider>
     </Router>
   );

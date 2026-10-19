@@ -8,16 +8,12 @@ import (
 	"time"
 
 	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/s3"
 	"github.com/gin-gonic/gin"
 )
 
 // FileUpload generates a PUT URL for uploading and a GET URL for accessing the file.
 func FileUpload(c *gin.Context) {
-    region := "eu-north-1"
-    bucket := "software-engineering-project-s3"
-
     // Retrieve query parameters for file path and name
     year := c.Query("year")
     subjectCode := c.Query("subjectCode")
@@ -34,18 +30,13 @@ func FileUpload(c *gin.Context) {
         return
     }
 
-    // Create an AWS session
-    sess, err := session.NewSession(&aws.Config{
-        Region: aws.String(region),
-    })
+    // Create an S3 service client using configured bucket and region
+    svc, bucket, err := getS3Config()
     if err != nil {
         log.Println("Failed to create AWS session:", err)
         c.JSON(500, gin.H{"error": "Failed to create AWS session"})
         return
     }
-
-    // Create an S3 service client
-    svc := s3.New(sess)
 
     // Generate a pre-signed PUT URL for the client to upload the file
     key := "notes/" + year + "/" + subjectCode + "/" + filename + ".pdf"
@@ -83,7 +74,7 @@ func FileUpload(c *gin.Context) {
 		UserID: 		userID,
 		UploadDate: 	time.Now(),
 		Stream: 		c.Query("stream"),
-		Status: 		"pending",
+		Status: 		"approved",
 		Content: 		getURL,
     }
     if err := db.Create(&record).Error; err != nil {

@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Navbar from "../components/navbar";
 import axios from "axios";
 import { IPYQ } from "../interfaces/pyqs";
+import SaveResourceButton from "../components/SaveResourceButton";
 
 const PYQsList = () => {
   const [pyq, setPYQs] = useState<IPYQ[]>();
@@ -26,10 +27,10 @@ const PYQsList = () => {
       );
 
       const data = response.data;
-      setPYQs(data.notes || []);
+      setPYQs(data.pyqs || data.notes || []);
       setLoading(false);
     } catch (err) {
-      setError("Error fetching notes. Please try again later.");
+      setError("Error fetching PYQs. Please try again later.");
       setLoading(false);
     }
   };
@@ -81,6 +82,13 @@ const PYQsList = () => {
                 <h3 className="text-lg font-semibold text-gray-800 text-center">
                   {pyqs.Title}
                 </h3>
+                <SaveResourceButton
+                  id={pyqs.ID}
+                  title={pyqs.Title}
+                  kind="pyq"
+                  contentUrl={pyqs.Content}
+                  subject={subjectCode || undefined}
+                />
               </div>
             ))}
           </div>

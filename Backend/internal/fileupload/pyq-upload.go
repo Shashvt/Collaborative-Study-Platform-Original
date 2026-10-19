@@ -8,15 +8,11 @@ import (
 	"time"
 
 	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/s3"
 	"github.com/gin-gonic/gin"
 )
 
 func PreviousYearUpload(c *gin.Context) {
-    region := "eu-north-1"
-    bucket := "software-engineering-project-s3"
-
     // Retrieve query parameters for file path and name
     year := c.Query("year")
     subjectCode := c.Query("subjectCode")
@@ -33,18 +29,13 @@ func PreviousYearUpload(c *gin.Context) {
         return
     }
 
-    // Create an AWS session
-    sess, err := session.NewSession(&aws.Config{
-        Region: aws.String(region),
-    })
+    // Create an S3 service client using configured bucket and region
+    svc, bucket, err := getS3Config()
     if err != nil {
         log.Println("Failed to create AWS session:", err)
         c.JSON(500, gin.H{"error": "Failed to create AWS session"})
         return
     }
-
-    // Create an S3 service client
-    svc := s3.New(sess)
 
     // Generate a pre-signed PUT URL for the client to upload the file
     key := "previous-year-question-paper/" + year + "/" + subjectCode + "/" + filename
@@ -75,21 +66,13 @@ func PreviousYearUpload(c *gin.Context) {
 
     db := config.GetDB()
     record := models.PreviousYearQuestion{
-		// Title: 	 		filename,
-		// Year:			yearInt,
-		// Description: 	c.Query("description"),
-		// Subject: 		subjectCode,
-		// UserID: 		userID,
-		// UploadDate: 	time.Now(),
-		// Stream: 		c.Query("stream"),
-		// Status: 		"pending",
-		// Content: 		getURL,
-		Subject: subjectCode,
-		Stream: c.Query("stream"),
-		Year: yearInt,
+		Title:      filename,
+		Subject:    subjectCode,
+		Stream:     c.Query("stream"),
+		Year:       yearInt,
 		DatePosted: time.Now(),
-		UserID: userID,
-		Content: getURL,
+		UserID:     userID,
+		Content:    getURL,
     }
     if err := db.Create(&record).Error; err != nil {
         log.Println("Failed to store file record:", err)

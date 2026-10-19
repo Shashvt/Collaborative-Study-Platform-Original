@@ -8,7 +8,6 @@ const UploadBooks = () => {
     const [bookAuthor, setBookAuthor] = useState('');
     const [bookDescription, setBookDescription] = useState('');
     const [bookPrice, setBookPrice] = useState('');
-    const [bookUserId, setBookUserId] = useState('');
     const [bookImage, setBookImage] = useState(null);
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
@@ -29,16 +28,14 @@ const UploadBooks = () => {
     const handleSubmit = async (e: any) => {
         e.preventDefault();
 
-        if (!bookTitle || !bookAuthor || !bookDescription || !bookPrice || !bookUserId || !bookImage) {
-            setError('All fields are required.');
+        if (!bookTitle || !bookAuthor || !bookDescription || !bookPrice) {
+            setError('Title, Author, Description, and Price are required.');
             setSuccess('');
             return;
         }
 
-        const formData = new FormData();
-        formData.append('file', bookImage);
-    
         try {
+            const imageName = bookImage ? (bookImage as any).name : '';
             const response = await axios.post(
                 `http://localhost:8080/api/v1/upload-book`,
                 {
@@ -46,20 +43,34 @@ const UploadBooks = () => {
                     "author": bookAuthor,
                     "description": bookDescription,
                     "price": Number(bookPrice),
+                    "imageName": imageName,
                 },{
                     withCredentials: true,
                 }
             );
 
+            if (response.data.upload_url && bookImage) {
+                await axios.put(response.data.upload_url, bookImage, {
+                    headers: {
+                        'Content-Type': (bookImage as any).type || 'image/jpeg',
+                    },
+                });
+            }
+
             if (response.status === 200) {
                 setSuccess('Book uploaded successfully!');
                 setError('');
+                setBookTitle('');
+                setBookAuthor('');
+                setBookDescription('');
+                setBookPrice('');
+                setBookImage(null);
             } else {
                 throw new Error('Unexpected response from server');
             }
         } catch (error: any) {
             console.error('Upload error:', error);
-            setError(error.response?.data?.message || 'Failed to upload file.');
+            setError(error.response?.data?.message || 'Failed to upload book.');
             setSuccess('');
         }
     };
@@ -109,18 +120,8 @@ const UploadBooks = () => {
                             <input 
                                 type="text" 
                                 placeholder="Enter the price of book"
-                                value={bookPrice}
+                                value={bookPrice} 
                                 onChange={(e) => setBookPrice(e.target.value)} 
-                                className="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                            />
-                        </div>
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700">Book UserID</label>
-                            <input 
-                                type="text" 
-                                placeholder="Enter the book user id" 
-                                value={bookUserId} 
-                                onChange={(e) => setBookUserId(e.target.value)}
                                 className="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                             />
                         </div>

@@ -38,14 +38,13 @@ const UploadPYQ = () => {
     
         try {
             const response = await axios.post(
-                `http://localhost:8080/api/v1/previous-year-upload?filename=${fileName}&year=${year}&subjectCode=${subjectCode}&stream=${stream}`,
+                `http://localhost:8080/api/v1/previous-year-upload?filename=${encodeURIComponent(fileName)}&year=${year}&subjectCode=${encodeURIComponent(subjectCode)}&stream=${encodeURIComponent(stream)}`,
+                {},
                 {
-
-                },{
                     withCredentials: true
                 }
             ).then(async(res) => {
-                await axios.put(res.data.upload_url, formData, {
+                await axios.put(res.data.upload_url, file, {
                     headers: {
                         'Content-Type': 'application/pdf',
                     },

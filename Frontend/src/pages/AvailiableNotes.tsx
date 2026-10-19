@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Navbar from "../components/navbar";
 import axios from "axios";
 import { INotes } from "../interfaces/notes";
+import SaveResourceButton from "../components/SaveResourceButton";
 
 const NotesList = () => {
   const [notes, setNotes] = useState<INotes[]>();
@@ -81,6 +82,13 @@ const NotesList = () => {
                 <h3 className="text-lg font-semibold text-gray-800 text-center">
                   {note.Title}
                 </h3>
+                <SaveResourceButton
+                  id={note.ID}
+                  title={note.Title}
+                  kind="notes"
+                  contentUrl={note.Content}
+                  subject={subjectCode || undefined}
+                />
               </div>
             ))}
           </div>

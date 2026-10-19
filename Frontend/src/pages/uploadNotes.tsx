@@ -27,6 +27,11 @@ const UploadNotes = () => {
     const handleSubmit = async (e: any) => {
         setError('');
         e.preventDefault();
+        console.log("fileName:", fileName);
+        console.log("year:", year);
+        console.log("subjectCode:", subjectCode);
+        console.log("stream:", stream);
+        console.log("file:", file);
 
         if (!fileName || !year || !subjectCode || !stream || !file) {
             setError('All fields are required.');
@@ -39,14 +44,13 @@ const UploadNotes = () => {
     
         try {
             const response = await axios.post(
-                `http://localhost:8080/api/v1/file-upload?filename=${fileName}&year=${year}&subjectCode=${subjectCode}`,
+                `http://localhost:8080/api/v1/file-upload?filename=${encodeURIComponent(fileName)}&year=${year}&subjectCode=${encodeURIComponent(subjectCode)}&stream=${encodeURIComponent(stream)}`,
+                {},
                 {
-
-                },{
                     withCredentials: true
                 }
             ).then(async(res) => {
-                await axios.put(res.data.upload_url, formData, {
+                await axios.put(res.data.upload_url, file, {
                     headers: {
                         'Content-Type': 'application/pdf',
                     },

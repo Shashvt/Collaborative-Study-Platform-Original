@@ -36,6 +36,13 @@ const HomeScreen = () => {
                         <h3>PYQS</h3>
                     </div>
                 </div>
+                <button
+                    type="button"
+                    onClick={() => navigate('/saved')}
+                    className="self-center text-blue-700 font-semibold hover:underline"
+                >
+                    Open saved materials
+                </button>
             </div>
         </section>
         </div>

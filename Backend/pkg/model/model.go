@@ -33,6 +33,7 @@ type Note struct {
 
 type PreviousYearQuestion struct {
     ID         string     `gorm:"primaryKey;default:gen_random_uuid()"`
+    Title      string
     Subject    string
     Stream     string
     Year       int

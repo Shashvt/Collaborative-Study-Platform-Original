@@ -30,7 +30,16 @@ const Navbar:FC<NavBarProps> = ({
           Hello {user}
         </a>
       </div>
-      <ImageDropdown />
+      <div className="flex items-center gap-4">
+        <button
+          type="button"
+          onClick={() => navigate("/saved")}
+          className="text-black font-semibold"
+        >
+          Saved
+        </button>
+        <ImageDropdown />
+      </div>
     </nav>
   );
 };
