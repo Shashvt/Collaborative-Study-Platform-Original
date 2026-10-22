@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Navbar from "../components/navbar";
 import axios from "axios";
+import { API_BASE_URL } from "../config/api";
 
 const CreateClass = () => {
   const [name, setName] = useState("");
@@ -37,7 +38,7 @@ const CreateClass = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:8080/api/v1/create-class",
+        `${API_BASE_URL}/api/v1/create-class`,
         {
           name,
           stream,

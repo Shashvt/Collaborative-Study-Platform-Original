@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Navbar from "../components/navbar";
 import axios from "axios";
+import { API_BASE_URL } from "../config/api";
 import { INotes } from "../interfaces/notes";
 import SaveResourceButton from "../components/SaveResourceButton";
 
@@ -21,7 +22,7 @@ const NotesList = () => {
   const fetchNotes = async () => {
     try {
       const response = await axios.post(
-        `http://localhost:8080/api/v1/view-notes`,
+        `${API_BASE_URL}/api/v1/view-notes`,
         { year: Number(year), subjectCode },
         { withCredentials: true }
       );

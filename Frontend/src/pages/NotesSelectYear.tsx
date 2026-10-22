@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import Navbar from '../components/navbar';
 import '../App.css';
 import axios from 'axios';
+import { API_BASE_URL } from '../config/api';
 
 const years = Array.from({ length: 4 }, (_, index) => ({
     id: index + 1,
@@ -15,7 +16,7 @@ const NotesSelectYear = () => {
 
     const projectNotes = async () => {
         await axios.post(
-            "http://localhost:8080/api/v1/view-notes",
+            `${API_BASE_URL}/api/v1/view-notes`,
             {
                 subjectCode: "CS101",
                 year: 1,

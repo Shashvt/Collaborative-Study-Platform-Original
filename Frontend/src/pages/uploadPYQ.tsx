@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from "axios";
+import { API_BASE_URL } from '../config/api';
 import '../App.css';
 import Navbar from '../components/navbar';
 
@@ -38,7 +39,7 @@ const UploadPYQ = () => {
     
         try {
             const response = await axios.post(
-                `http://localhost:8080/api/v1/previous-year-upload?filename=${encodeURIComponent(fileName)}&year=${year}&subjectCode=${encodeURIComponent(subjectCode)}&stream=${encodeURIComponent(stream)}`,
+                `${API_BASE_URL}/api/v1/previous-year-upload?filename=${encodeURIComponent(fileName)}&year=${year}&subjectCode=${encodeURIComponent(subjectCode)}&stream=${encodeURIComponent(stream)}`,
                 {},
                 {
                     withCredentials: true

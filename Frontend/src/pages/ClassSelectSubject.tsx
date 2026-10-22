@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Navbar from "../components/navbar";
 import axios from "axios";
+import { API_BASE_URL } from "../config/api";
 
 const NotesSelectSubject = () => {
   const [subjects, setSubjects] = useState([]);
@@ -18,7 +19,7 @@ const NotesSelectSubject = () => {
     const fetchSubjects = async () => {
       try {
         const response = await axios.post(
-          `http://localhost:8080/api/v1/fetch-subjects-class`,
+          `${API_BASE_URL}/api/v1/fetch-subjects-class`,
           {},
           {
             withCredentials: true,

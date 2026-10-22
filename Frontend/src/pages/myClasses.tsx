@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../components/navbar";
 import axios from "axios";
+import { API_BASE_URL } from "../config/api";
 import { IClass } from "../interfaces/class";
 
 const MyClasses = () => {
@@ -12,7 +13,7 @@ const MyClasses = () => {
     const fetchClasses = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8080/api/v1/fetch-class",
+          `${API_BASE_URL}/api/v1/fetch-class`,
           {
             withCredentials: true,
           }

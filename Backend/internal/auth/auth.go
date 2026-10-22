@@ -4,6 +4,7 @@ import (
 	config "backend/internal/db-config"
 	models "backend/pkg/model"
 	"net/http"
+	"os"
 	"time"
 
 	"errors"
@@ -13,6 +14,20 @@ import (
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 )
+
+func setAuthCookie(c *gin.Context, userID string) {
+	cookieDomain := os.Getenv("COOKIE_DOMAIN")
+	isProd := os.Getenv("ENV") == "production" || os.Getenv("GIN_MODE") == "release"
+	maxAge := 86400 * 7 // 7 days
+
+	if isProd {
+		c.SetSameSite(http.SameSiteNoneMode)
+		c.SetCookie("user_id", userID, maxAge, "/", cookieDomain, true, true)
+	} else {
+		c.SetSameSite(http.SameSiteLaxMode)
+		c.SetCookie("user_id", userID, maxAge, "/", cookieDomain, false, true)
+	}
+}
 
 func validatePassword(password string) error {
 	if len(password) < 8 || len(password) > 15 {
@@ -90,7 +105,7 @@ func SignUp(c *gin.Context) {
         return
     }
 
-	c.SetCookie("user_id", user.ID, 3600, "/", "localhost", false, true) // Adjust cookie parameters as needed
+	setAuthCookie(c, user.ID)
     c.JSON(http.StatusCreated, user)
 }
 
@@ -125,6 +140,6 @@ func SignIn(c *gin.Context) {
         return
     }
 
-	c.SetCookie("user_id", user.ID, 3600, "/", "localhost", false, true) // Adjust cookie parameters as needed
+	setAuthCookie(c, user.ID)
     c.JSON(http.StatusOK, user)
 }

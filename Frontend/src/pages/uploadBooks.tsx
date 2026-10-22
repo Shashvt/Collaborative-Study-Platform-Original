@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import '../App.css';
 import Navbar from '../components/navbar';
 import axios from 'axios';
+import { API_BASE_URL } from '../config/api';
 
 const UploadBooks = () => {
     const [bookTitle, setBookTitle] = useState('');
@@ -37,7 +38,7 @@ const UploadBooks = () => {
         try {
             const imageName = bookImage ? (bookImage as any).name : '';
             const response = await axios.post(
-                `http://localhost:8080/api/v1/upload-book`,
+                `${API_BASE_URL}/api/v1/upload-book`,
                 {
                     "title": bookTitle,
                     "author": bookAuthor,

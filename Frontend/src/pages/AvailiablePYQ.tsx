@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Navbar from "../components/navbar";
 import axios from "axios";
+import { API_BASE_URL } from "../config/api";
 import { IPYQ } from "../interfaces/pyqs";
 import SaveResourceButton from "../components/SaveResourceButton";
 
@@ -21,7 +22,7 @@ const PYQsList = () => {
   const fetchPYQ = async () => {
     try {
       const response = await axios.post(
-        `http://localhost:8080/api/v1/view-pyqs`,
+        `${API_BASE_URL}/api/v1/view-pyqs`,
         { year: Number(year), subjectCode },
         { withCredentials: true }
       );

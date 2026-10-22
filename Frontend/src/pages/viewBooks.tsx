@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { API_BASE_URL } from '../config/api';
 import Navbar from '../components/navbar';
 
 interface BookItem {
@@ -21,7 +22,7 @@ const ViewBooks = () => {
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        axios.get('http://localhost:8080/api/v1/view-books', { withCredentials: true })
+        axios.get(`${API_BASE_URL}/api/v1/view-books`, { withCredentials: true })
             .then((res) => {
                 setBooks(res.data.books || []);
                 setLoading(false);

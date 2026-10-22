@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../components/navbar";
 import axios from "axios";
+import { API_BASE_URL } from "../config/api";
 import { IClass } from "../interfaces/class";
 
 const JoinClass = () => {
@@ -16,7 +17,7 @@ const JoinClass = () => {
     const fetchClasses = async () => {
       try {
         const response = await axios.post(
-          "http://localhost:8080/api/v1/fetch-class-subject",
+          `${API_BASE_URL}/api/v1/fetch-class-subject`,
           {
             subject: subjectCode,
           },

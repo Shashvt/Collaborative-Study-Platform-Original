@@ -2,6 +2,7 @@ package file_upload
 
 import (
 	config "backend/internal/db-config"
+	middleware "backend/internal/middlewares"
 	models "backend/pkg/model"
 	"log"
 	"strconv"
@@ -22,9 +23,9 @@ func PreviousYearUpload(c *gin.Context) {
         return
     }
 
-    // Get the user ID from the cookie (or however it is stored in your application)
-    userID, err := c.Cookie("user_id")
-    if err != nil {
+    // Get the user ID from the cookie or Authorization token
+    userID := middleware.ExtractUserID(c)
+    if userID == "" {
         c.JSON(401, gin.H{"error": "User not authenticated"})
         return
     }

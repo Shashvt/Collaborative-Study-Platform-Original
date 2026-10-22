@@ -6,6 +6,7 @@ import React, {
   PropsWithChildren,
 } from "react";
 import axios from "axios";
+import { API_BASE_URL } from "../config/api";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
@@ -60,7 +61,7 @@ export const AuthContextProvider: React.FC<PropsWithChildren> = ({
     setLoading(true);
     await axios
       .post(
-        "http://localhost:8080/signup",
+        `${API_BASE_URL}/signup`,
         {
           name: name,
           email,
@@ -86,7 +87,7 @@ export const AuthContextProvider: React.FC<PropsWithChildren> = ({
     setLoading(true);
     await axios
       .post(
-        "http://localhost:8080/signin",
+        `${API_BASE_URL}/signin`,
         {
           email,
           password,

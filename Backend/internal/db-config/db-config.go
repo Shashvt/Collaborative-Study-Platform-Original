@@ -4,6 +4,7 @@ import (
 	models "backend/pkg/model"
 	"fmt"
 	"log"
+	"os"
 	"sync"
 
 	"gorm.io/driver/postgres"
@@ -29,8 +30,11 @@ var (
 // InitializeDB initializes the database connection and performs migrations
 func InitializeDB(cfg Config) *gorm.DB {
     once.Do(func() {
-        dsn := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=%s",
-            cfg.Host, cfg.Port, cfg.User, cfg.Password, cfg.DBName, cfg.SSLMode)
+        dsn := os.Getenv("DATABASE_URL")
+        if dsn == "" {
+            dsn = fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=%s",
+                cfg.Host, cfg.Port, cfg.User, cfg.Password, cfg.DBName, cfg.SSLMode)
+        }
 
         var err error
         db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{

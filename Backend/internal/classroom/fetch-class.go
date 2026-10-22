@@ -2,16 +2,16 @@ package classroom
 
 import (
 	config "backend/internal/db-config"
+	middleware "backend/internal/middlewares"
 	models "backend/pkg/model"
 
 	"github.com/gin-gonic/gin"
 )
 
 func FetchClassForUser(c *gin.Context) {
-	// Get the user ID from the cookie (or however it is stored in your application)
-	userID, err := c.Cookie("user_id")
-
-	if err != nil {
+	// Get the user ID from the cookie or Authorization token
+	userID := middleware.ExtractUserID(c)
+	if userID == "" {
 		c.JSON(401, gin.H{"error": "User not authenticated"})
 		return
 	}
