@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../App.css';
 import NotesImage from '../assets/Notes.png';
 import ClassImage from '../assets/Class.png';
-import axios from 'axios';
 import Navbar from '../components/navbar';
 
 const Notes = () => {

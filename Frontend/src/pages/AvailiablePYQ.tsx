@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import Navbar from "../components/navbar";
 import axios from "axios";
 import { API_BASE_URL } from "../config/api";
@@ -11,7 +11,6 @@ const PYQsList = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  const navigate = useNavigate();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const year = queryParams.get("year");
@@ -37,8 +36,8 @@ const PYQsList = () => {
   };
 
   useEffect(() => {
-    console.log("I was called");
     fetchPYQ();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleNoteClick = (link: string) => {

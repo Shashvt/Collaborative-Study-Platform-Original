@@ -11,3 +11,5 @@ Backend/.env
 .DS_Store
 *.log
 *.zip
+build/
+Frontend/build/

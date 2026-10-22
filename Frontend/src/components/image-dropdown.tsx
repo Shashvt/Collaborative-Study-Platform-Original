@@ -41,9 +41,9 @@ const ImageDropdown = () => {
         <div className="dropdown-menu">
           <a href="/">Dashboard</a>
           <a href="/saved">Saved</a>
-          <div onClick={() => {handleLogout()}} className="logout-button">
-            <a>Logout</a>
-          </div>
+          <button type="button" onClick={() => {handleLogout()}} className="logout-button">
+            Logout
+          </button>
         </div>
       )}
     </div>
