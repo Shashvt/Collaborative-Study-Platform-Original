@@ -36,6 +36,7 @@ const UploadBooks = () => {
         }
 
         try {
+            const token = localStorage.getItem("authToken");
             const imageName = bookImage ? (bookImage as any).name : '';
             const response = await axios.post(
                 `${API_BASE_URL}/api/v1/upload-book`,
@@ -47,6 +48,7 @@ const UploadBooks = () => {
                     "imageName": imageName,
                 },{
                     withCredentials: true,
+                    headers: token ? { Authorization: `Bearer ${token}` } : {},
                 }
             );
 
@@ -71,7 +73,16 @@ const UploadBooks = () => {
             }
         } catch (error: any) {
             console.error('Upload error:', error);
-            setError(error.response?.data?.message || 'Failed to upload book.');
+            const serverMsg = error.response?.data?.error || error.response?.data?.message;
+            if (error.response?.status === 401) {
+                setError('Session expired or unauthorized. Please log out and sign in again.');
+            } else if (serverMsg) {
+                setError(serverMsg);
+            } else if (error.message?.includes('Network Error') || error.code === 'ERR_NETWORK') {
+                setError('Network/CORS error: Please check your AWS S3 bucket CORS configuration.');
+            } else {
+                setError(error.message || 'Failed to upload book.');
+            }
             setSuccess('');
         }
     };
