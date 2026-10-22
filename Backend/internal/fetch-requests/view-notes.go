@@ -2,6 +2,7 @@ package fetchrequests
 
 import (
 	config "backend/internal/db-config"
+	file_upload "backend/internal/fileupload"
 	models "backend/pkg/model"
 
 	"github.com/gin-gonic/gin"
@@ -35,15 +36,14 @@ func FetchNotes(c *gin.Context) {
 		return
 	}
 
-	// we need to return only the note whose status is not pending
-
-	for i, note := range notes {
-		if note.Status == "pending" {
-			notes = append(notes[:i], notes[i+1:]...)
+	// Filter out any pending notes and refresh S3 URLs so they never expire
+	var approvedNotes []models.Note
+	for _, note := range notes {
+		if note.Status != "pending" {
+			note.Content = file_upload.RefreshS3URL(note.Content)
+			approvedNotes = append(approvedNotes, note)
 		}
 	}
 
-	// Return the notes
-
-	c.JSON(200, gin.H{"notes": notes})
+	c.JSON(200, gin.H{"notes": approvedNotes})
 }

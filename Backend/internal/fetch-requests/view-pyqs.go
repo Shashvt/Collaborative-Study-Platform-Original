@@ -2,6 +2,7 @@ package fetchrequests
 
 import (
 	config "backend/internal/db-config"
+	file_upload "backend/internal/fileupload"
 	models "backend/pkg/model"
 
 	"github.com/gin-gonic/gin"
@@ -33,6 +34,11 @@ func FetchPYQS(c *gin.Context) {
 	if result.Error != nil {
 		c.JSON(500, gin.H{"error": "Failed to fetch previous year questions"})
 		return
+	}
+
+	// Refresh S3 URLs so they never expire
+	for i := range pyqs {
+		pyqs[i].Content = file_upload.RefreshS3URL(pyqs[i].Content)
 	}
 
 	c.JSON(200, gin.H{"pyqs": pyqs})

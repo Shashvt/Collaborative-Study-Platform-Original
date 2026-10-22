@@ -2,6 +2,7 @@ package fetchrequests
 
 import (
 	config "backend/internal/db-config"
+	file_upload "backend/internal/fileupload"
 	models "backend/pkg/model"
 
 	"github.com/gin-gonic/gin"
@@ -29,7 +30,7 @@ func ViewBooks(c *gin.Context){
 				"author":      book.Author,
 				"description": book.Description,
 				"price":       book.Price,
-				"image":       book.Image,
+				"image":       file_upload.RefreshS3URL(book.Image),
 				"status":      book.Status,
 			},
 			"user_email": book.User.Email, 
