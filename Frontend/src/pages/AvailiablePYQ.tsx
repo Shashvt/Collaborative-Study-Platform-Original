@@ -20,10 +20,14 @@ const PYQsList = () => {
 
   const fetchPYQ = async () => {
     try {
+      const token = localStorage.getItem("authToken");
       const response = await axios.post(
         `${API_BASE_URL}/api/v1/view-pyqs`,
-        { year: Number(year), subjectCode },
-        { withCredentials: true }
+        { year: Number(year), subjectCode, stream },
+        {
+          withCredentials: true,
+          headers: token ? { Authorization: `Bearer ${token}` } : {},
+        }
       );
 
       const data = response.data;
@@ -51,9 +55,9 @@ const PYQsList = () => {
         <Navbar />
         <section className="py-12 flex-grow flex flex-col items-center">
           <h2 className="text-3xl font-bold text-gray-800 mb-6 text-center">
-            Notes for Subject: {subjectCode}
+            PYQs for Subject: {subjectCode}
           </h2>
-          <div className="text-center text-gray-700">Loading notes...</div>
+          <div className="text-center text-gray-700">Loading PYQs...</div>
         </section>
       </div>
     );
@@ -67,7 +71,7 @@ const PYQsList = () => {
         </h2>
 
         {loading && (
-          <div className="text-center text-gray-700">Loading notes...</div>
+          <div className="text-center text-gray-700">Loading PYQs...</div>
         )}
         {error && <div className="text-center text-red-600">{error}</div>}
 
@@ -95,7 +99,7 @@ const PYQsList = () => {
         ) : (
           !loading && (
             <div className="text-center text-gray-700 mt-6">
-              No notes available.
+              No previous year questions available.
             </div>
           )
         )}

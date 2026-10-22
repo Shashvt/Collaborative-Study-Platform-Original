@@ -20,7 +20,7 @@ const PYQSelectStream = () => {
     const navigate = useNavigate();
 
     const handleStreamClick = (streamId: string) => {
-        navigate(`/select-year?stream=${streamId}`);
+        navigate(`/pyq-select-year?stream=${streamId}`);
     };
 
     return (

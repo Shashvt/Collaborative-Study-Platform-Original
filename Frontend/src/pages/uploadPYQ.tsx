@@ -8,11 +8,11 @@ const UploadPYQ = () => {
     const [fileName, setFileName] = useState('');
     const [year, setYear] = useState('');
     const [subjectCode, setSubjectCode] = useState('');
+    const [stream, setStream] = useState('');
     const [file, setFile] = useState<File | null>(null);
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
     const [loading, setLoading] = useState(false);
-    const stream = "COE";
 
     const handleFileChange = (e: any) => {
         const selectedFile = e.target.files[0];
@@ -28,7 +28,7 @@ const UploadPYQ = () => {
     const handleSubmit = async (e: any) => {
         e.preventDefault();
 
-        if (!fileName || !year || !subjectCode || !file) {
+        if (!fileName || !year || !subjectCode || !stream || !file) {
             setError('All fields are required.');
             setSuccess('');
             return;
@@ -64,6 +64,7 @@ const UploadPYQ = () => {
             setFileName('');
             setYear('');
             setSubjectCode('');
+            setStream('');
             setFile(null);
         } catch (error: any) {
             console.error('Upload error:', error);
@@ -112,6 +113,29 @@ const UploadPYQ = () => {
                                 className="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                             />
                         </div>
+
+                        {/* Stream Dropdown */}
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700">Stream</label>
+                            <select
+                                value={stream}
+                                onChange={(e) => setStream(e.target.value)}
+                                className="mt-1 block w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                            >
+                                <option value="">Select Stream</option>
+                                <option value="COE">Computer Engineering (COE)</option>
+                                <option value="COBS">Computer Science and Business Systems (COBS)</option>
+                                <option value="COPC">Computer Science (COPC)</option>
+                                <option value="ENC">Electronics and Computers (ENC)</option>
+                                <option value="ECE">Electronics and Communication (ECE)</option>
+                                <option value="EIC">Electronics and Instrumentation (EIC)</option>
+                                <option value="MECH">Mechanical Engineering (MECH)</option>
+                                <option value="MECHTRONICS">Mechatronics (MECHTRONICS)</option>
+                                <option value="CIVIL">Civil Engineering</option>
+                                <option value="BIOTECH">Biotechnology</option>
+                            </select>
+                        </div>
+
                         <div>
                             <label className="block text-sm font-medium text-gray-700">Subject Code</label>
                             <input 

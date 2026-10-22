@@ -12,6 +12,7 @@ func FetchNotes(c *gin.Context) {
 	var requestBody struct {
 		Year        int    `json:"year"`
 		SubjectCode string `json:"subjectCode"`
+		Stream      string `json:"stream"`
 	}
 
 	if err := c.ShouldBindJSON(&requestBody); err != nil {
@@ -23,7 +24,11 @@ func FetchNotes(c *gin.Context) {
 
 	// Create a slice to store the notes
 	var notes []models.Note
-	result := db.Where("year = ? AND subject = ? AND status != ?", requestBody.Year, requestBody.SubjectCode, "pending").Find(&notes)
+	query := db.Where("year = ? AND subject = ? AND status != ?", requestBody.Year, requestBody.SubjectCode, "pending")
+	if requestBody.Stream != "" {
+		query = query.Where("stream = ?", requestBody.Stream)
+	}
+	result := query.Find(&notes)
 
 	if result.Error != nil {
 		c.JSON(500, gin.H{"error": "Failed to fetch notes"})

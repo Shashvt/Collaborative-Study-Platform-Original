@@ -39,8 +39,19 @@ func FileUpload(c *gin.Context) {
         return
     }
 
+    stream := c.Query("stream")
+    cleanFilename := filename
+    if len(cleanFilename) < 4 || cleanFilename[len(cleanFilename)-4:] != ".pdf" {
+        cleanFilename = cleanFilename + ".pdf"
+    }
+
     // Generate a pre-signed PUT URL for the client to upload the file
-    key := "notes/" + year + "/" + subjectCode + "/" + filename + ".pdf"
+    var key string
+    if stream != "" {
+        key = "notes/" + stream + "/" + year + "/" + subjectCode + "/" + cleanFilename
+    } else {
+        key = "notes/" + year + "/" + subjectCode + "/" + cleanFilename
+    }
     putReq, _ := svc.PutObjectRequest(&s3.PutObjectInput{
         Bucket: aws.String(bucket),
         Key:    aws.String(key),

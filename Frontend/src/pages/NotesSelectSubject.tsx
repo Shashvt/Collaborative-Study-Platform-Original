@@ -24,15 +24,16 @@ const NotesSelectSubject = () => {
 
         const fetchSubjects = async () => {
             try {
-                console.log("I was here")
+                const token = localStorage.getItem("authToken");
                 const response = await axios.post(
                     `${API_BASE_URL}/api/v1/fetch-subjects-notes?year=${year}&stream=${stream}`, {}, {
                         withCredentials: true,
+                        headers: token ? { Authorization: `Bearer ${token}` } : {},
                     }
                 );
                 
                 const data = await response.data;
-                setSubjects(data.subjects); // Assuming response contains an array of subjects
+                setSubjects(data.subjects || []); // Assuming response contains an array of subjects
                 setLoading(false);
             } catch (err) {
                 setError('Error fetching subjects. Try again later.');

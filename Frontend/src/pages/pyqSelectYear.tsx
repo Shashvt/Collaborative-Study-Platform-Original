@@ -1,9 +1,7 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Navbar from '../components/navbar';
 import '../App.css';
-import axios from 'axios';
-import { API_BASE_URL } from '../config/api';
 
 const years = Array.from({ length: 4 }, (_, index) => ({
     id: index + 1,
@@ -14,35 +12,12 @@ const PYQSelectYear = () => {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const projectNotes = async () => {
-        await axios.post(
-            `${API_BASE_URL}/api/v1/view-pyqs`,
-            {
-                subjectCode: "CS101",
-                year: 1,
-            },
-            {
-                withCredentials: true,
-            }
-        )
-            .then((res) => {
-                console.log(res);
-            })
-            .catch((err) => {
-                console.log(err);
-            });
-    };
-
     const queryParams = new URLSearchParams(location.search);
     const stream = queryParams.get('stream') || 'Unknown Stream';
 
     const handleSemesterClick = (yearId: number) => {
-        navigate(`/select-subject?stream=${stream}&year=${yearId}`);
+        navigate(`/pyq-select-subject?stream=${stream}&year=${yearId}`);
     };
-
-    useEffect(() => {
-        projectNotes();
-    }, []);
 
     return (
         <div className="min-h-screen bg-gray-100 w-full">

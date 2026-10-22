@@ -20,10 +20,14 @@ const NotesList = () => {
 
   const fetchNotes = async () => {
     try {
+      const token = localStorage.getItem("authToken");
       const response = await axios.post(
         `${API_BASE_URL}/api/v1/view-notes`,
-        { year: Number(year), subjectCode },
-        { withCredentials: true }
+        { year: Number(year), subjectCode, stream },
+        {
+          withCredentials: true,
+          headers: token ? { Authorization: `Bearer ${token}` } : {},
+        }
       );
 
       const data = response.data;

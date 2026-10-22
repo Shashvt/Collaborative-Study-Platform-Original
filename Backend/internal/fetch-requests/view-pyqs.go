@@ -12,6 +12,7 @@ func FetchPYQS(c *gin.Context) {
 	var requestBody struct {
 		Year        int    `json:"year"`
 		SubjectCode string `json:"subjectCode"`
+		Stream      string `json:"stream"`
 	}
 
 	if err := c.ShouldBindJSON(&requestBody); err != nil {
@@ -21,12 +22,16 @@ func FetchPYQS(c *gin.Context) {
 
 	db := config.GetDB()
 
-	// Create a slice to store the notes
+	// Create a slice to store the pyqs
 	var pyqs []models.PreviousYearQuestion
-	result := db.Where("year = ? AND subject = ?", requestBody.Year, requestBody.SubjectCode).Find(&pyqs)
+	query := db.Where("year = ? AND subject = ?", requestBody.Year, requestBody.SubjectCode)
+	if requestBody.Stream != "" {
+		query = query.Where("stream = ?", requestBody.Stream)
+	}
+	result := query.Find(&pyqs)
 
 	if result.Error != nil {
-		c.JSON(500, gin.H{"error": "Failed to fetch notes"})
+		c.JSON(500, gin.H{"error": "Failed to fetch previous year questions"})
 		return
 	}
 

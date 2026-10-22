@@ -219,7 +219,7 @@ function App() {
                 }
               />
               <Route
-                path="/select-stream"
+                path="/pyq-select-stream"
                 element={
                   <ProtectedRoute>
                     <PYQSelectStream />
@@ -227,7 +227,7 @@ function App() {
                 }
               />
               <Route
-                path="/select-year"
+                path="/pyq-select-year"
                 element={
                   <ProtectedRoute>
                     <PYQSelectYear />
@@ -235,7 +235,7 @@ function App() {
                 }
               />
               <Route
-                path="/select-subject"
+                path="/pyq-select-subject"
                 element={
                   <ProtectedRoute>
                     <PYQSelectSubject />

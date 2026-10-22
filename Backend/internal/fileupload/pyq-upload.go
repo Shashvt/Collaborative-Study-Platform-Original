@@ -18,8 +18,9 @@ func PreviousYearUpload(c *gin.Context) {
     year := c.Query("year")
     subjectCode := c.Query("subjectCode")
     filename := c.Query("filename")
-    if filename == "" {
-        c.JSON(400, gin.H{"error": "Filename is required"})
+    stream := c.Query("stream")
+    if filename == "" || year == "" || subjectCode == "" || stream == "" {
+        c.JSON(400, gin.H{"error": "Filename, year, subject code, and stream are required"})
         return
     }
 
@@ -38,8 +39,13 @@ func PreviousYearUpload(c *gin.Context) {
         return
     }
 
-    // Generate a pre-signed PUT URL for the client to upload the file
-    key := "previous-year-question-paper/" + year + "/" + subjectCode + "/" + filename
+    cleanFilename := filename
+    if len(cleanFilename) < 4 || cleanFilename[len(cleanFilename)-4:] != ".pdf" {
+        cleanFilename = cleanFilename + ".pdf"
+    }
+
+    // Generate a pre-signed PUT URL for the client to upload the file organized by stream/branch
+    key := "previous-year-question-paper/" + stream + "/" + year + "/" + subjectCode + "/" + cleanFilename
     putReq, _ := svc.PutObjectRequest(&s3.PutObjectInput{
         Bucket: aws.String(bucket),
         Key:    aws.String(key),
@@ -69,7 +75,7 @@ func PreviousYearUpload(c *gin.Context) {
     record := models.PreviousYearQuestion{
 		Title:      filename,
 		Subject:    subjectCode,
-		Stream:     c.Query("stream"),
+		Stream:     stream,
 		Year:       yearInt,
 		DatePosted: time.Now(),
 		UserID:     userID,

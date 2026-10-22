@@ -16,7 +16,7 @@ const PYQ = () => {
                     <div className="flex flex-col md:flex-row justify-between gap-12">
                         <div
                             className="card cursor-pointer"
-                            onClick={() => navigate('/select-stream')}
+                            onClick={() => navigate('/pyq-select-stream')}
                         >
                             <img src={NotesImage} alt="View PYQ" />
                             <h3 className="mt-4 text-lg font-semibold text-center">
