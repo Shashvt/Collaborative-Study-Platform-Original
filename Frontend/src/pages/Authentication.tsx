@@ -9,47 +9,59 @@ const Authentication = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const { signup, login } = useAuthContext();
 
   const signUp = async () => {
+    if (!username || !email || !password) {
+      toast.error("Please fill in all fields");
+      return;
+    }
+    setLoading(true);
     try {
-      await signup(username, email, password, "student").then(() => {
-        toast.success('Signed up Successfully', {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: false,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-          transition: Bounce,
-          });
-      }
-      );
+      await signup(username, email, password, "student");
+      toast.success("Signed up successfully", {
+        position: "top-right",
+        autoClose: 4000,
+        theme: "light",
+        transition: Bounce,
+      });
     } catch (error: any) {
-      toast.error(error.data.error);
-      console.log(error.data.error);
+      const msg =
+        error?.data?.error ||
+        error?.response?.data?.error ||
+        error?.message ||
+        "Failed to sign up";
+      toast.error(msg);
+      console.error("Sign up error:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
   const signIn = async () => {
+    if (!email || !password) {
+      toast.error("Please enter email and password");
+      return;
+    }
+    setLoading(true);
     try {
       await login(email, password);
-      toast.success('Signed in Successfully', {
+      toast.success("Signed in successfully", {
         position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
+        autoClose: 4000,
         theme: "light",
         transition: Bounce,
-        });
-    } catch (error) {
-      console.log(error);
-      toast.error("Incorrect credentials");
+      });
+    } catch (error: any) {
+      const msg =
+        error?.data?.error ||
+        error?.response?.data?.error ||
+        "Incorrect email/password or server connection error";
+      toast.error(msg);
+      console.error("Sign in error:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -57,13 +69,15 @@ const Authentication = () => {
     <div className="container-auth">
       {/* Features Section */}
       <div className="features-section-auth">
-        <h2>Features</h2>
-        <ul>
-          <li>Collaborative Learning Environment</li>
-          <li>User-Friendly Resource Sharing</li>
-          <li>Class Creation and Participation</li>
-          <li>Access to a Diverse Range of Study Materials</li>
-        </ul>
+        <div className="features-card-overlay">
+          <h2>Platform Features</h2>
+          <ul>
+            <li>✓ Collaborative Learning Environment</li>
+            <li>✓ User-Friendly Resource Sharing</li>
+            <li>✓ Class Creation and Participation</li>
+            <li>✓ Access to a Diverse Range of Study Materials</li>
+          </ul>
+        </div>
       </div>
 
       {/* Login/Register Form Section */}
@@ -75,12 +89,14 @@ const Authentication = () => {
         {/* Toggle between Sign In and Sign Up */}
         <div className="form-toggle-auth">
           <button
+            type="button"
             onClick={() => setIsSignIn(true)}
             className={isSignIn ? "active" : ""}
           >
             Sign In
           </button>
           <button
+            type="button"
             onClick={() => setIsSignIn(false)}
             className={!isSignIn ? "active" : ""}
             id="create-account"
@@ -91,63 +107,72 @@ const Authentication = () => {
 
         {isSignIn ? (
           // Sign In Form
-          <div className="form-auth">
+          <form
+            onSubmit={async (e) => {
+              e.preventDefault();
+              await signIn();
+            }}
+            className="form-auth"
+          >
             <h3>Welcome Back</h3>
             <p>Hello there, sign in to continue</p>
             <input
-              type="text"
-              placeholder="Email"
+              type="email"
+              placeholder="Email address"
+              value={email}
               required
               onChange={(e) => setEmail(e.target.value)}
             />
             <input
               type="password"
               placeholder="Password"
+              value={password}
               required
               onChange={(e) => setPassword(e.target.value)}
             />
-            <button
-              onClick={async () => {
-                await signIn();
-              }}
-              className="sign-in"
-            >
-              Sign In
+            <button type="submit" disabled={loading} className="sign-in">
+              {loading ? "Signing in..." : "Sign In"}
             </button>
-          </div>
+          </form>
         ) : (
           // Sign Up Form
-          <div className="form-auth">
+          <form
+            onSubmit={async (e) => {
+              e.preventDefault();
+              await signUp();
+            }}
+            className="form-auth"
+          >
             <h3>Create Account</h3>
             <p>Hello there, fill in below to create an account</p>
             <input
               type="text"
-              placeholder="Username"
+              placeholder="Username / Full Name"
+              value={username}
               required
               onChange={(e) => setUsername(e.target.value)}
             />
             <input
               type="email"
               placeholder="Email Address"
+              value={email}
               required
               onChange={(e) => setEmail(e.target.value)}
             />
             <input
               type="password"
               placeholder="Password"
+              value={password}
               required
               onChange={(e) => setPassword(e.target.value)}
             />
-            <button
-              onClick={async () => {
-                await signUp();
-                // console.log("I was clicked")
-              }}
-              className="sign-up"
-            >
-              Sign Up
+            <p className="text-xs text-gray-600 mb-2">
+              Password: 8-15 chars, uppercase, lowercase, number & symbol.
+            </p>
+            <button type="submit" disabled={loading} className="sign-up">
+              {loading ? "Creating account..." : "Create Account"}
             </button>
-          </div>
+          </form>
         )}
       </div>
     </div>

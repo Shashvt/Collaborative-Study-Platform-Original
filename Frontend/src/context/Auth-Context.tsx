@@ -75,7 +75,7 @@ export const AuthContextProvider: React.FC<PropsWithChildren> = ({
       .then((res) => {
         setToken(res.data.ID);
         setUser(res.data.Name);
-        toast.done(res.data.message)
+        toast.success(res.data.message || "Account created successfully!");
         navigate("/");
       })
       .catch((err) => {
